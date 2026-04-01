@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TERMINAL - POWER SHUTDOWN MONITOR</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-primary: #00ff41; /* Matrix Green */
+            --text-secondary: #00ccff; /* Cyber Blue */
+            --text-dim: #004411;
+            --border-color: #1a1a1a;
+            --header-bg: #0a0a0a;
+            --font-main: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Scanline effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            background: rgba(10, 10, 10, 0.8);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 1.2rem;
+            margin: 0;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .status-bar {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 8px;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        .ticket {
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        .site-name {
+            color: #ffffff;
+        }
+
+        .schedule {
+            color: var(--text-primary);
+            white-space: pre-line;
+        }
+
+        .ip {
+            color: var(--text-secondary);
+        }
+
+        tr:hover {
+            background-color: rgba(0, 255, 65, 0.05);
+        }
+
+        .blink {
+            animation: blinker 1.5s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid var(--border-color);
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+            }
+            td::before {
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                color: var(--text-secondary);
+                content: attr(data-label);
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Network Shutdown Schedule <span class="blink">_</span></h1>
+            <div class="status-bar">SYSTEM STATUS: OPERATIONAL | DATE: APRIL 1, 2026 | SECURITY LEVEL: CLASSIFIED</div>
+        </header>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Ticket Number</th>
+                    <th>Site Name</th>
+                    <th>Schedule (from Memo)</th>
+                    <th>Loopback IP</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890035</td>
+                    <td data-label="Site Name" class="site-name">The loop Bacolod</td>
+                    <td data-label="Schedule" class="schedule">April 2-3, 2026: Mall Closed (No power shutdown)</td>
+                    <td data-label="Loopback IP" class="ip">10.41.12.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890034</td>
+                    <td data-label="Site Name" class="site-name">HR SOHO CENTRAL</td>
+                    <td data-label="Schedule" class="schedule">April 2-3, 2026: No Operation (Mall Closed)</td>
+                    <td data-label="Loopback IP" class="ip">10.5.1.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890033</td>
+                    <td data-label="Site Name" class="site-name">AAR & AASP Lima Estate</td>
+                    <td data-label="Schedule" class="schedule">April 1, 2026 12:00 AM (Holy Wednesday)</td>
+                    <td data-label="Loopback IP" class="ip">10.60.18.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890030</td>
+                    <td data-label="Site Name" class="site-name">SOHO Central</td>
+                    <td data-label="Schedule" class="schedule">April 2-3, 2026: No Operation (Mall Closed)</td>
+                    <td data-label="Loopback IP" class="ip">10.5.1.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890029</td>
+                    <td data-label="Site Name" class="site-name">AAR Southmall</td>
+                    <td data-label="Schedule" class="schedule">(No memo provided for Southmall)</td>
+                    <td data-label="Loopback IP" class="ip">10.31.14.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890021</td>
+                    <td data-label="Site Name" class="site-name">The loop Ayala Mall Central Bloc Cebu</td>
+                    <td data-label="Schedule" class="schedule">April 2-3, 2026: Mall operations suspended</td>
+                    <td data-label="Loopback IP" class="ip">10.41.28.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890018</td>
+                    <td data-label="Site Name" class="site-name">APP Festival Mall</td>
+                    <td data-label="Schedule" class="schedule">April 2-3, 2026: 6:00 AM to 5:00 PM
+(Emergency power only)</td>
+                    <td data-label="Loopback IP" class="ip">10.11.8.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890017</td>
+                    <td data-label="Site Name" class="site-name">AASP S'Maison</td>
+                    <td data-label="Schedule" class="schedule">(No memo provided for S Maison)</td>
+                    <td data-label="Loopback IP" class="ip">10.61.14.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890015</td>
+                    <td data-label="Site Name" class="site-name">AASP \ AAR Abreeza</td>
+                    <td data-label="Schedule" class="schedule">April 2, 5:00 AM to April 3, 10:00 PM</td>
+                    <td data-label="Loopback IP" class="ip">N/A</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890014</td>
+                    <td data-label="Site Name" class="site-name">AASP CDO Limketkhai</td>
+                    <td data-label="Schedule" class="schedule">April 2-3, 2026: 1:00 AM - 6:00 PM
+(Emergency power only)</td>
+                    <td data-label="Loopback IP" class="ip">10.61.20.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890013</td>
+                    <td data-label="Site Name" class="site-name">APP Greenbelt 3</td>
+                    <td data-label="Schedule" class="schedule">April 2, 2026: 12:01 MN to 1:00 PM</td>
+                    <td data-label="Loopback IP" class="ip">10.11.3.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890009</td>
+                    <td data-label="Site Name" class="site-name">AAR \ AASP KCC Mall Zamboanga</td>
+                    <td data-label="Schedule" class="schedule">April 3, 2026: 07:00 AM - 03:00 PM
+(Per floor schedule)</td>
+                    <td data-label="Loopback IP" class="ip">N/A</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890008</td>
+                    <td data-label="Site Name" class="site-name">The Loop MITSUKOSHI</td>
+                    <td data-label="Schedule" class="schedule">April 2-3, 2026: Mall Closed
+(Preventive Maintenance)</td>
+                    <td data-label="Loopback IP" class="ip">10.41.37.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260401890007</td>
+                    <td data-label="Site Name" class="site-name">AASP Robinsons Galleria Cebu</td>
+                    <td data-label="Schedule" class="schedule">April 2-3, 2026: Mall Closed</td>
+                    <td data-label="Loopback IP" class="ip">10.31.22.1</td>
+                </tr>
+                <tr>
+                    <td data-label="Ticket Number" class="ticket">20260328890008</td>
+                    <td data-label="Site Name" class="site-name">APP SM Megamall</td>
+                    <td data-label="Schedule" class="schedule">April 1, 11:00 PM to April 4, 6:00 AM</td>
+                    <td data-label="Loopback IP" class="ip">10.11.4.1</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
